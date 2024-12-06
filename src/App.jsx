@@ -1,18 +1,29 @@
 import './App.css'
+import {useEffect, useState} from "react";
+import ProductList from './ProductList';
 
 function App() {
 
+   const [products, setProducts] = useState([]);
 
-  return (
-      <div>
-          <button type="button" className="btn btn-outline-primary">Primary</button>
-          <button type="button" className="btn btn-outline-secondary">Secondary</button>
-          <button type="button" className="btn btn-outline-success">Success</button>
-          <button type="button" className="btn btn-outline-danger">Danger</button>
-          <button type="button" className="btn btn-outline-warning">Warning</button>
-          <button type="button" className="btn btn-outline-info">Info</button>
-          <button type="button" className="btn btn-outline-light">Light</button>
-          <button type="button" className="btn btn-outline-dark">Dark</button>
+    useEffect(() => {
+      fetch('http://localhost:8080/api/products')
+      .then(response => response.json())
+      .then(data => setProducts(data));
+    }, []);
+
+    return (
+
+      <div className='container'>
+        <div>
+          {products.length ? (
+            //Display Products
+            <ProductList products={products} />
+          ) : (
+            // No Products Found
+            <p>No Products Found!!</p>
+          ) }
+        </div>
       </div>
   )
 }
